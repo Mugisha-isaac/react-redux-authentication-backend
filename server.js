@@ -3,14 +3,10 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('./model');
 const app = express();
-require('./routes/auth.routes');
-require('./routes/user.routes');
+const {authRoutes} = require('./routes/auth.routes');
 
-var corsOptions ={
-    origin: "http://localhost:8081"
-}
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
@@ -38,8 +34,9 @@ function initial(){
 app.get('/',(req,res)=>{
     res.json({message:'welcome on react redux authentication course'});
 })
+app.use('/api/auth',authRoutes);
 
 const port = process.env.PORT || 8080;
 app.listen(port,()=>{
-    console.log('server running');
+    console.log(`server is running on port ${port}`);
 })
